@@ -1,5 +1,4 @@
-﻿using SportCity.Core.ProjectAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportCity.Core.Entities.PlaygroundAggregate;
 

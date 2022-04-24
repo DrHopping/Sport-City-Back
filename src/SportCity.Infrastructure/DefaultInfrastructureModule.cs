@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
 using SportCity.Core.Interfaces;
-using SportCity.Core.ProjectAggregate;
 using SportCity.Infrastructure.Data;
 using SportCity.SharedKernel.Interfaces;
 using MediatR;

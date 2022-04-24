@@ -1,12 +1,14 @@
 ﻿using Ardalis.ListStartupServices;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 using SportCity.Core;
 using SportCity.Infrastructure;
 using SportCity.Infrastructure.Data;
 using SportCity.Web;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using SportCity.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,12 +22,17 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-string connectionString = builder.Configuration.GetConnectionString("SqliteConnection");  //Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+  .AddEntityFrameworkStores<AppIdentityDbContext>()
+  .AddDefaultTokenProviders();
 
-builder.Services.AddDbContext(connectionString);
+string connectionString = builder.Configuration.GetConnectionString("SqliteConnection");  //Configuration.GetConnectionString("DefaultConnection");
+string identityConnectionString = builder.Configuration.GetConnectionString("SqliteIdentityConnection");
+
+builder.Services.AddDbContext<AppDbContext>(connectionString);
+builder.Services.AddDbContext<AppIdentityDbContext>(identityConnectionString);
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-builder.Services.AddRazorPages();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -49,7 +56,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
   containerBuilder.RegisterModule(new DefaultInfrastructureModule(builder.Environment.EnvironmentName == "Development"));
 });
 
-//builder.Logging.AddAzureWebAppDiagnostics(); add this if deploying to Azure
 
 var app = builder.Build();
 
@@ -60,7 +66,6 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-  app.UseExceptionHandler("/Home/Error");
   app.UseHsts();
 }
 app.UseRouting();
@@ -78,25 +83,22 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1")
 app.UseEndpoints(endpoints =>
 {
   endpoints.MapDefaultControllerRoute();
-  endpoints.MapRazorPages();
 });
 
-// Seed Database
 using (var scope = app.Services.CreateScope())
 {
-  var services = scope.ServiceProvider;
-
+  var scopedProvider = scope.ServiceProvider;
   try
   {
-    var context = services.GetRequiredService<AppDbContext>();
-    //                    context.Database.Migrate();
-    context.Database.EnsureCreated();
-    SeedData.Initialize(services);
+    var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+    identityContext.Database.EnsureCreated();
+    await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
   }
   catch (Exception ex)
   {
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
+    app.Logger.LogError(ex, "An error occurred seeding the DB.");
   }
 }
 

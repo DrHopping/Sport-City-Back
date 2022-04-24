@@ -1,5 +1,4 @@
 ﻿using Ardalis.EFCore.Extensions;
-using SportCity.Core.ProjectAggregate;
 using SportCity.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,19 +15,11 @@ public class AppDbContext : DbContext
 {
   private readonly IMediator? _mediator;
 
-  //public AppDbContext(DbContextOptions options) : base(options)
-  //{
-  //}
-
   public AppDbContext(DbContextOptions<AppDbContext> options, IMediator? mediator)
       : base(options)
   {
     _mediator = mediator;
   }
-
-  public DbSet<ToDoItem> ToDoItems => Set<ToDoItem>();
-  public DbSet<Project> Projects => Set<Project>();
-
   public DbSet<Category> Categories => Set<Category>();
   public DbSet<City> Cities => Set<City>();
   public DbSet<Event> Events => Set<Event>();
@@ -66,7 +57,7 @@ public class AppDbContext : DbContext
       entity.Events.Clear();
       foreach (var domainEvent in events)
       {
-        await _mediator.Publish(domainEvent).ConfigureAwait(false);
+        await _mediator.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
       }
     }
 

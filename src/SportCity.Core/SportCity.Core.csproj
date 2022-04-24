@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -24,7 +24,6 @@
     <Folder Include="Entities\CategoryAggregate\Exceptions" />
     <Folder Include="Entities\CategoryAggregate\Specifications" />
     <Folder Include="Entities\CityAggregate\Exceptions" />
-    <Folder Include="Entities\CityAggregate\Specifications" />
     <Folder Include="Entities\EventAggregate\Specifications" />
     <Folder Include="Entities\PlayerAggregate\Specifications" />
     <Folder Include="Entities\PlaygroundAggregate\Exceptions" />
