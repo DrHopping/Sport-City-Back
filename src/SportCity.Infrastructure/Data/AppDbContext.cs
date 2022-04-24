@@ -3,6 +3,12 @@ using SportCity.Core.ProjectAggregate;
 using SportCity.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SportCity.Core.Entities.CategoryAggregate;
+using SportCity.Core.Entities.CityAggregate;
+using SportCity.Core.Entities.EventAggregate;
+using SportCity.Core.Entities.PlayerAggregate;
+using SportCity.Core.Entities.PlaygroundAggregate;
+using SportCity.Core.Entities.SportAggregate;
 
 namespace SportCity.Infrastructure.Data;
 
@@ -22,6 +28,14 @@ public class AppDbContext : DbContext
 
   public DbSet<ToDoItem> ToDoItems => Set<ToDoItem>();
   public DbSet<Project> Projects => Set<Project>();
+
+  public DbSet<Category> Categories => Set<Category>();
+  public DbSet<City> Cities => Set<City>();
+  public DbSet<Event> Events => Set<Event>();
+  public DbSet<Player> Players => Set<Player>();
+  public DbSet<Playground> Playgrounds => Set<Playground>();
+  public DbSet<Review> Feedbacks => Set<Review>();
+  public DbSet<Sport> Sports => Set<Sport>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

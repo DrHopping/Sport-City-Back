@@ -30,4 +30,13 @@
     <ProjectReference Include="..\SportCity.Infrastructure\SportCity.Infrastructure.csproj" />
   </ItemGroup>
   
+  <ItemGroup>
+    <Compile Update="Endpoints\ProjectEndpoints\Create.CreateProjectRequest.cs">
+      <DependentUpon>Create.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\ProjectEndpoints\Create.CreateProjectResponse.cs">
+      <DependentUpon>Create.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
 </Project>

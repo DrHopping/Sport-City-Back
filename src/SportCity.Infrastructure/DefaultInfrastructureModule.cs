@@ -6,6 +6,7 @@ using SportCity.Infrastructure.Data;
 using SportCity.SharedKernel.Interfaces;
 using MediatR;
 using MediatR.Pipeline;
+using SportCity.Core.Entities.PlaygroundAggregate;
 using Module = Autofac.Module;
 
 namespace SportCity.Infrastructure;
@@ -18,7 +19,7 @@ public class DefaultInfrastructureModule : Module
   public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly = null)
   {
     _isDevelopment = isDevelopment;
-    var coreAssembly = Assembly.GetAssembly(typeof(Project)); // TODO: Replace "Project" with any type from your Core project
+    var coreAssembly = Assembly.GetAssembly(typeof(Playground)); // TODO: Replace "Project" with any type from your Core project
     var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
     if (coreAssembly != null)
     {

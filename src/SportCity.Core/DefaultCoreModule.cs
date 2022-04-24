@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using SportCity.Core.Entities;
 using SportCity.Core.Interfaces;
 using SportCity.Core.Services;
 
