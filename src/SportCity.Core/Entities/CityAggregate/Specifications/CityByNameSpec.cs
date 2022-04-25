@@ -7,6 +7,6 @@ public class CityByNameSpec : Specification<City>, ISingleResultSpecification
   public CityByNameSpec(string name)
   {
     Query
-      .Where(c => String.Equals(c.Name, name, StringComparison.CurrentCultureIgnoreCase));
+      .Where(c => c.Name.ToLower() == name.ToLower());
   }
 }

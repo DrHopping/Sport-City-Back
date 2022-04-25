@@ -9,12 +9,15 @@ using SportCity.Web;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using SportCity.Infrastructure.Identity;
+using SportCity.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
+
+builder.Services.AddAutoMapper(typeof(ApiMappingProfile));
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
@@ -39,16 +42,6 @@ builder.Services.AddSwaggerGen(c =>
   c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
   c.EnableAnnotations();
 });
-
-// add list services for diagnostic purposes - see https://github.com/ardalis/AspNetCoreStartupServices
-builder.Services.Configure<ServiceConfig>(config =>
-{
-  config.Services = new List<ServiceDescriptor>(builder.Services);
-
-  // optional - default path to view services is /listallservices - recommended to choose your own path
-  config.Path = "/listservices";
-});
-
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
@@ -84,6 +77,21 @@ app.UseEndpoints(endpoints =>
 {
   endpoints.MapDefaultControllerRoute();
 });
+
+
+using (var scope = app.Services.CreateScope())
+{
+  var scopedProvider = scope.ServiceProvider;
+  try
+  {
+    var identityContext = scopedProvider.GetRequiredService<AppDbContext>();
+    identityContext.Database.EnsureCreated();
+  }
+  catch (Exception ex)
+  {
+    app.Logger.LogError(ex, "An error occurred setting the DB.");
+  }
+}
 
 using (var scope = app.Services.CreateScope())
 {

@@ -9,28 +9,51 @@ namespace SportCity.Core.Services;
 
 public class CityService : ICityService
 {
-  private readonly IRepository<City> _basketRepository;
-  private readonly IAppLogger<CityService> _logger;
+  private readonly IRepository<City> _cityRepository;
 
-  public CityService(IRepository<City> basketRepository, IAppLogger<CityService> logger)
+  public CityService(IRepository<City> cityRepository)
   {
-    _basketRepository = basketRepository;
-    _logger = logger;
+    _cityRepository = cityRepository;
   }
 
   public async Task<City> CreateCity(string name)
   {
-    var citySpec = new CityByNameSpec(name);
-    var city = await _basketRepository.GetBySpecAsync(citySpec);
-    Guard.Against.ExistingCity(city, name);
+    var city = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
+    Guard.Against.EntityAlreadyExists(city, nameof(name), name);
     
     city = new City(name);
-    await _basketRepository.AddAsync(city);
+    await _cityRepository.AddAsync(city);
     return city;
   }
+  
+  public async Task<List<City>> GetAllCities() => await _cityRepository.ListAsync();
+  
+  public async Task<City> UpdateCityName(int id, string name)
+  {
+    var city = await _cityRepository.GetByIdAsync(id);
+    Guard.Against.EntityNotFound(city, nameof(id), id.ToString());    
+    
+    city = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
+    Guard.Against.EntityAlreadyExists(city, nameof(name), name);
+
+    city.UpdateName(name);        
+    await _cityRepository.UpdateAsync(city);
+    return city;
+  }
+ 
+  public async Task DeleteCity(int id)
+  {
+    var city = await _cityRepository.GetByIdAsync(id);
+    Guard.Against.EntityNotFound(city, nameof(id), id.ToString());    
+    await _cityRepository.DeleteAsync(city);
+  }
+  
 }
 
 public interface ICityService
 {
   Task<City> CreateCity(string name);
+  Task<List<City>> GetAllCities();
+  Task<City> UpdateCityName(int id, string name);
+  Task DeleteCity(int id);
 }
