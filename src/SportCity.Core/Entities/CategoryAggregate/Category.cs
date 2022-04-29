@@ -1,4 +1,5 @@
-﻿using SportCity.SharedKernel;
+﻿using Ardalis.GuardClauses;
+using SportCity.SharedKernel;
 using SportCity.SharedKernel.Interfaces;
 
 namespace SportCity.Core.Entities.CategoryAggregate;
@@ -11,6 +12,9 @@ public class Category : BaseEntity, IAggregateRoot
 
   public Category(string name)
   {
-    Name = name;
+    Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));;
   }
+  
+  public void UpdateName(string name) => Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+
 }
