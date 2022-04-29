@@ -18,10 +18,10 @@ public class CityService : ICityService
 
   public async Task<City> CreateCity(string name)
   {
-    var city = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
-    Guard.Against.EntityAlreadyExists(city, nameof(name), name);
+    var sameNameCity = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
+    Guard.Against.EntityAlreadyExists(sameNameCity, nameof(name), name);
     
-    city = new City(name);
+    var city = new City(name);
     await _cityRepository.AddAsync(city);
     return city;
   }
@@ -33,8 +33,8 @@ public class CityService : ICityService
     var city = await _cityRepository.GetByIdAsync(id);
     Guard.Against.EntityNotFound(city, nameof(id), id.ToString());    
     
-    city = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
-    Guard.Against.EntityAlreadyExists(city, nameof(name), name);
+    var sameNameCity = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
+    Guard.Against.EntityAlreadyExists(sameNameCity, nameof(name), name);
 
     city.UpdateName(name);        
     await _cityRepository.UpdateAsync(city);

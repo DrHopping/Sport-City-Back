@@ -2,4 +2,4 @@
 
 namespace SportCity.Infrastructure.Identity;
 
-public class ApplicationUser : IdentityUser { }
+public class EfApplicationUser : IdentityUser { }

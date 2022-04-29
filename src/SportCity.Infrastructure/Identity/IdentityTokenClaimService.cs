@@ -9,9 +9,9 @@ namespace SportCity.Infrastructure.Identity;
 
 public class IdentityTokenClaimService : ITokenClaimsService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<EfApplicationUser> _userManager;
 
-    public IdentityTokenClaimService(UserManager<ApplicationUser> userManager)
+    public IdentityTokenClaimService(UserManager<EfApplicationUser> userManager)
     {
         _userManager = userManager;
     }

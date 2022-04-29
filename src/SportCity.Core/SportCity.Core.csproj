@@ -22,14 +22,12 @@
 
   <ItemGroup>
     <Folder Include="Entities\CategoryAggregate\Exceptions" />
-    <Folder Include="Entities\CategoryAggregate\Specifications" />
     <Folder Include="Entities\CityAggregate\Exceptions" />
     <Folder Include="Entities\EventAggregate\Specifications" />
     <Folder Include="Entities\PlayerAggregate\Specifications" />
     <Folder Include="Entities\PlaygroundAggregate\Exceptions" />
     <Folder Include="Entities\PlaygroundAggregate\Specifications" />
     <Folder Include="Entities\SportAggregate\Exceptions" />
-    <Folder Include="Entities\SportAggregate\Specifications" />
   </ItemGroup>
 
 </Project>

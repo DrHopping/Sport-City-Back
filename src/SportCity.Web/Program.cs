@@ -9,6 +9,7 @@ using SportCity.Web;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using SportCity.Infrastructure.Identity;
+using SportCity.Web.Filters;
 using SportCity.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +26,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<EfApplicationUser, IdentityRole>()
   .AddEntityFrameworkStores<AppIdentityDbContext>()
   .AddDefaultTokenProviders();
 
@@ -41,6 +42,27 @@ builder.Services.AddSwaggerGen(c =>
 {
   c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
   c.EnableAnnotations();
+  c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+  {
+    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\nEnter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: 'Bearer 12345abcdef'",
+    Name = "Authorization",
+    In = ParameterLocation.Header,
+    Type = SecuritySchemeType.ApiKey,
+    Scheme = "Bearer"
+  });
+  c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+  {
+    {
+      new OpenApiSecurityScheme
+      {
+        Reference = new OpenApiReference {Type = ReferenceType.SecurityScheme, Id = "Bearer"},
+        Scheme = "oauth2",
+        Name = "Bearer",
+        In = ParameterLocation.Header,
+      },
+      new List<string>()
+    }
+  });
 });
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -98,7 +120,7 @@ using (var scope = app.Services.CreateScope())
   var scopedProvider = scope.ServiceProvider;
   try
   {
-    var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var userManager = scopedProvider.GetRequiredService<UserManager<EfApplicationUser>>();
     var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
     identityContext.Database.EnsureCreated();
