@@ -1,6 +1,8 @@
-﻿namespace SportCity.Core.Exceptions;
+﻿using SportCity.SharedKernel.Exceptions;
 
-public class EntityAlreadyExistsExceptions : Exception
+namespace SportCity.Core.Exceptions;
+
+public class EntityAlreadyExistsExceptions : BadRequestException
 {
   public EntityAlreadyExistsExceptions(string entityName, string fieldName, string value) 
     : base($"{entityName} with {fieldName.ToLower()} {value} already exist") { }
