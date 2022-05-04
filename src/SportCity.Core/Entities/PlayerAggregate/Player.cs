@@ -1,4 +1,7 @@
-﻿using SportCity.Core.Entities.CategoryAggregate;
+﻿using Ardalis.GuardClauses;
+using JetBrains.Annotations;
+using SportCity.Core.Entities.CategoryAggregate;
+using SportCity.Core.Entities.EventAggregate;
 using SportCity.SharedKernel;
 using SportCity.SharedKernel.Interfaces;
 
@@ -13,14 +16,24 @@ public class Player : BaseEntity, IAggregateRoot
   public int CategoryId { get; private set; }
   public Category Category { get; private set; }
   
+  private readonly List<Event> _participatedEvents = new();
+  public IReadOnlyCollection<Event> ParticipatedEvents => _participatedEvents.AsReadOnly();
+  
+  private readonly List<Event> _organizedEvents = new();
+  public IReadOnlyCollection<Event> OrganizedEvents => _participatedEvents.AsReadOnly();
+  
   private Player() { }
 
-  public Player(string identityGuid, byte[] avatar, string firstName, string lastName, int category)
+  public Player(string identityGuid, string firstName, string lastName, int categoryId) //TODO: Add avatars
   { 
     IdentityGuid = identityGuid;
-    Avatar = avatar;
     FirstName = firstName;
     LastName = lastName;
-    CategoryId = category;
+    CategoryId = categoryId;
   }
+  
+  public void UpdateCategory(int categoryId) => CategoryId = Guard.Against.Negative(categoryId, nameof(categoryId));
+  public void UpdateFirstName(string firstName) => FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
+  public void UpdateLastName(string lastName) => LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
+
 }

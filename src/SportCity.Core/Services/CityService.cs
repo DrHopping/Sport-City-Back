@@ -31,7 +31,7 @@ public class CityService : ICityService
   public async Task<City> UpdateCityName(int id, string name)
   {
     var city = await _cityRepository.GetByIdAsync(id);
-    Guard.Against.EntityNotFound(city, nameof(id), id.ToString());    
+    Guard.Against.EntityNotFound(city, nameof(id), id.ToString());
     
     var sameNameCity = await _cityRepository.GetBySpecAsync(new CityByNameSpec(name));
     Guard.Against.EntityAlreadyExists(sameNameCity, nameof(name), name);

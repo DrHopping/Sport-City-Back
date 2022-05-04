@@ -14,9 +14,4 @@ public class BaseException : Exception
     Errors = errors;
     StatusCode = statusCode;
   }
-  
-  public override string ToString()
-  {
-    return JsonSerializer.Serialize(this);
-  }
 }

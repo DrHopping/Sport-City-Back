@@ -7,6 +7,7 @@ using MediatR;
 using MediatR.Pipeline;
 using SportCity.Core.Entities.CityAggregate;
 using SportCity.Core.Entities.PlaygroundAggregate;
+using SportCity.Infrastructure.Identity.Services;
 using SportCity.Infrastructure.Logging;
 using Module = Autofac.Module;
 
@@ -55,15 +56,22 @@ public class DefaultInfrastructureModule : Module
         .As(typeof(IRepository<>))
         .As(typeof(IReadRepository<>))
         .InstancePerLifetimeScope();
-    builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
     builder.RegisterGeneric(typeof(LoggerAdapter<>)).As(typeof(IAppLogger<>)).InstancePerLifetimeScope();
     builder.RegisterType<EmailSender>().As<IEmailSender>().InstancePerLifetimeScope();
+    
+    builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+    builder.RegisterType<IdentityTokenClaimService>().As<ITokenClaimsService>().InstancePerLifetimeScope();
+    builder.RegisterType<AuthorizationService>().As<IAuthorizationService>().InstancePerLifetimeScope();
+    builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
+
 
     ConfigureMediatr(builder);
   }
 
   private void ConfigureMediatr(ContainerBuilder builder)
   {
+    builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
+
     builder.Register<ServiceFactory>(context =>
     {
       var c = context.Resolve<IComponentContext>();
