@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SportCity.Core.Entities.CategoryAggregate;
 using SportCity.Core.Entities.CityAggregate;
+using SportCity.Core.Entities.PlayerAggregate;
 using SportCity.Core.Entities.SportAggregate;
 using SportCity.Core.User;
 using SportCity.Web.Models;
@@ -15,5 +16,7 @@ public class ApiMappingProfile : Profile
     CreateMap<Sport, SportResponse>();
     CreateMap<Category, CategoryResponse>();
     CreateMap<User, UserCreateResponse>();
+    CreateMap<User, UserResponse>();
+    CreateMap<Player, PlayerResponse>();
   }
 }

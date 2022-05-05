@@ -9,12 +9,13 @@ namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+[Authorize(Roles = Roles.Admin)]
+public class UsersController : ControllerBase
 {
   private readonly IUserService _userService;
   private readonly IMapper _mapper;
 
-  public UserController(IMapper mapper, IUserService userService)
+  public UsersController(IMapper mapper, IUserService userService)
   {
     _mapper = mapper;
     _userService = userService;
@@ -28,9 +29,11 @@ public class UserController : ControllerBase
     return Ok(_mapper.Map<UserCreateResponse>(user));
   }
 
+  [HttpGet]
   public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken = new())
   {
-    var users = await _userService.
+    var users = await _userService.GetAllUsers();
+    return Ok(_mapper.Map<List<UserResponse>>(users));
   }
   
   

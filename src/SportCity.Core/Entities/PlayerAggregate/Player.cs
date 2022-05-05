@@ -36,4 +36,11 @@ public class Player : BaseEntity, IAggregateRoot
   public void UpdateFirstName(string firstName) => FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
   public void UpdateLastName(string lastName) => LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
 
+  public void UpdateWith(Player playerUpdate)
+  {
+    CategoryId = playerUpdate.CategoryId > 0 ? playerUpdate.CategoryId : CategoryId;
+    FirstName = !String.IsNullOrWhiteSpace(playerUpdate.FirstName) ? playerUpdate.FirstName : FirstName;
+    LastName = !String.IsNullOrWhiteSpace(playerUpdate.LastName) ? playerUpdate.LastName : LastName;
+  }
+
 }

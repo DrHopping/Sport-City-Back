@@ -41,8 +41,9 @@ public static class AppConfiguration
     }
   }
 
-  public static void UseExceptionHandlerMiddleware(this WebApplication app)
+  public static void UseApplicationMiddleware(this WebApplication app)
   {
+    app.UseMiddleware<TokenHandlerMiddleware>();
     app.UseMiddleware<ExceptionHandlerMiddleware>();
   }
 

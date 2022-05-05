@@ -27,6 +27,13 @@ public class SportService : ISportService
   
   public async Task<List<Sport>> GetAllSports() => await _sportRepository.ListAsync();
   
+  public async Task<Sport> GetSportById(int id)
+  {
+    var sport = await _sportRepository.GetByIdAsync(id);
+    Guard.Against.EntityNotFound(sport, nameof(id), id.ToString());
+    return sport;
+  }
+  
   public async Task<Sport> UpdateSportName(int id, string name)
   {
     var sport = await _sportRepository.GetByIdAsync(id);
@@ -53,6 +60,7 @@ public interface ISportService
 {
   Task<Sport> CreateSport(string name);
   Task<List<Sport>> GetAllSports();
+  Task<Sport> GetSportById(int id);
   Task<Sport> UpdateSportName(int id, string name);
   Task DeleteSport(int id);
 }

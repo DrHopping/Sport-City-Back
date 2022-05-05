@@ -48,7 +48,7 @@ app.UseCors(x => x
   .AllowAnyMethod()
   .AllowAnyHeader());
 
-app.UseExceptionHandlerMiddleware();
+app.UseApplicationMiddleware();
 
 app.UseAuthentication();
 app.UseAuthorization();

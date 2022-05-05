@@ -9,3 +9,5 @@ public record UserRequest(
   [Required] [EmailAddress] string Email); 
 
 public record UserCreateResponse(string IdentityId);
+
+public record UserResponse(string IdentityId, string FirstName, string LastName);

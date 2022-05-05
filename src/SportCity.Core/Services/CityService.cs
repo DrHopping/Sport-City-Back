@@ -27,6 +27,13 @@ public class CityService : ICityService
   }
   
   public async Task<List<City>> GetAllCities() => await _cityRepository.ListAsync();
+
+  public async Task<City> GetCityById(int id)
+  {
+    var city = await _cityRepository.GetByIdAsync(id);
+    Guard.Against.EntityNotFound(city, nameof(id), id.ToString());
+    return city;
+  }
   
   public async Task<City> UpdateCityName(int id, string name)
   {
@@ -54,6 +61,7 @@ public interface ICityService
 {
   Task<City> CreateCity(string name);
   Task<List<City>> GetAllCities();
+  Task<City> GetCityById(int id);
   Task<City> UpdateCityName(int id, string name);
   Task DeleteCity(int id);
 }

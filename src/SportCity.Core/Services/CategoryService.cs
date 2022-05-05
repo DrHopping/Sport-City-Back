@@ -29,6 +29,13 @@ public class CategoryService : ICategoryService
   
   public async Task<List<Category>> GetAllCategories() => await _categoryRepository.ListAsync();
   
+  public async Task<Category> GetCategoryById(int id)
+  {
+    var category = await _categoryRepository.GetByIdAsync(id);
+    Guard.Against.EntityNotFound(category, nameof(id), id.ToString());
+    return category;
+  }
+  
   public async Task<Category> UpdateCategoryName(int id, string name)
   {
     var category = await _categoryRepository.GetByIdAsync(id);
@@ -55,6 +62,7 @@ public interface ICategoryService
 {
   Task<Category> CreateCategory(string name);
   Task<List<Category>> GetAllCategories();
+  Task<Category> GetCategoryById(int id);
   Task<Category> UpdateCategoryName(int id, string name);
   Task DeleteCategory(int id);
 }

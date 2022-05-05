@@ -3,6 +3,7 @@ using Ardalis.GuardClauses;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SportCity.Core.Guards;
 using SportCity.Core.Interfaces;
 using SportCity.Core.User;
@@ -56,6 +57,13 @@ public class UserService : IUserService
   {
     var user = await GetUser(id);
     await _userManager.RemoveFromRoleAsync(user, Roles.Admin);
+  }
+
+  public async Task<List<User>> GetAllUsers()
+  {
+    Guard.Against.NotAdmin(_authorizationService);
+    var users = await _userManager.Users.ToListAsync();
+    return _mapper.Map<List<User>>(users);
   }
 
   private async Task<EfApplicationUser> GetUser(string id)
