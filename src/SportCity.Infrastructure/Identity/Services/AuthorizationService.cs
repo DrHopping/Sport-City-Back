@@ -21,4 +21,6 @@ public class AuthorizationService : IAuthorizationService
   }
   
   public void SetToken(string token) => _token = Guard.Against.NullOrWhiteSpace(token, nameof(token));
+
+  public string GetIdentity() => _tokenClaimService.GetUserIdentity(_token);
 }

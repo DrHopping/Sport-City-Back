@@ -3,9 +3,9 @@ using SportCity.Core.Entities.CityAggregate;
 
 namespace SportCity.Core.Entities.PlayerAggregate.Specifications;
 
-public class PlayerByIdSpec : Specification<Player>, ISingleResultSpecification
+public class PlayerByAnyIdSpec : Specification<Player>, ISingleResultSpecification
 {
-  public PlayerByIdSpec(string id)
+  public PlayerByAnyIdSpec(string id)
   {
     Query
       .Where(p => p.Id.ToString() == id || p.IdentityGuid == id)

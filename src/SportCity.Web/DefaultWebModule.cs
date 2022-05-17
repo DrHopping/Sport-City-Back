@@ -9,5 +9,6 @@ public class DefaultWebModule : Module
   {
     builder.RegisterType<ExceptionHandlerMiddleware>().InstancePerLifetimeScope();
     builder.RegisterType<TokenHandlerMiddleware>().InstancePerLifetimeScope();
+    builder.RegisterType<OwningUserAccessMiddleware>().InstancePerLifetimeScope();
   }
 }

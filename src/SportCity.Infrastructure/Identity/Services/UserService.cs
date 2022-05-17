@@ -32,12 +32,12 @@ public class UserService : IUserService
   {
     Guard.Against.EmailAlreadyTaken(await _userManager.FindByEmailAsync(email));
     //Guard.Against.UsernameAlreadyTaken(await _userManager.FindByNameAsync(username));
-    var user = new EfApplicationUser {FirstName = firstName, LastName = lastName, UserName = email, Email = email};
+    var user = new EfApplicationUser {UserName = email, Email = email};
     var result = await _userManager.CreateAsync(user, password);
     Guard.Against.BadPassword(result);
     await AddToRole(user, Roles.User);
     user = await _userManager.FindByEmailAsync(user.Email);
-    var userModel = _mapper.Map<User>(user);
+    var userModel = new User {FirstName = firstName, LastName = lastName, IdentityId = user.Id};
     await _mediator.Publish(new NewUserCreatedEvent(userModel));
     return userModel;
   }

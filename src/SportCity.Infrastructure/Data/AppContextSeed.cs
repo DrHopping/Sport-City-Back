@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportCity.Core.Entities.CategoryAggregate;
+using SportCity.Core.Entities.CityAggregate;
 using SportCity.Core.Entities.SportAggregate;
 
 namespace SportCity.Infrastructure.Data;
@@ -24,6 +25,12 @@ public static class AppContextSeed
       await context.Sports.AddRangeAsync(GetPreconfiguredSports());
       await context.SaveChangesAsync();
     }
+    
+    if (!await context.Cities.AnyAsync())
+    {
+      await context.Cities.AddRangeAsync(GetPreconfiguredCities());
+      await context.SaveChangesAsync();
+    }
   }
   
   static IEnumerable<Category> GetPreconfiguredCategories()
@@ -46,5 +53,14 @@ public static class AppContextSeed
     };
   }
   
+  static IEnumerable<City> GetPreconfiguredCities()
+  {
+    return new List<City>
+    {
+      new("Kyiv"),
+      new("Lviv"),
+      new("Vinnitsya")
+    };
+  }
   
 }

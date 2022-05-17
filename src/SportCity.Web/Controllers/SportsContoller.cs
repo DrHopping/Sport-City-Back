@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportCity.Core.Services;
+using SportCity.SharedKernel;
+using SportCity.Web.Attributes;
 using SportCity.Web.Models;
 
 namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = Roles.Admin)]
 public class SportsController : ControllerBase
 {
   private readonly ISportService _sportService;
@@ -26,13 +30,14 @@ public class SportsController : ControllerBase
   }
  
   [HttpGet]
+  [AllowAnonymous]
   public async Task<IActionResult> GetAllCities(CancellationToken cancellationToken = new())
   {
     var cities = await _sportService.GetAllSports();
     return Ok(_mapper.Map<List<SportResponse>>(cities));
   }
   
-  [HttpPatch]
+  [HttpPut]
   [Route("{id:int}")]
   public async Task<IActionResult> UpdateSport(int id, [FromBody] SportRequest request, CancellationToken cancellationToken = new())
   {

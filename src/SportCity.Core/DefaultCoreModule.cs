@@ -13,5 +13,6 @@ public class DefaultCoreModule : Module
     builder.RegisterType<SportService>().As<ISportService>().InstancePerLifetimeScope();
     builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
     builder.RegisterType<PlayerService>().As<IPlayerService>().InstancePerLifetimeScope();
+    builder.RegisterType<PlaygroundService>().As<IPlaygroundService>().InstancePerLifetimeScope();
   }
 }

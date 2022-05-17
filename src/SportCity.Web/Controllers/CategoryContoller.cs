@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportCity.Core.Entities.CategoryAggregate;
 using SportCity.Core.Entities.SportAggregate;
 using SportCity.Core.Services;
+using SportCity.SharedKernel;
 using SportCity.Web.Models;
 
 namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = Roles.Admin)]
 public class CategoryController : ControllerBase
 {
   private readonly ICategoryService _categoryService;
@@ -28,13 +31,14 @@ public class CategoryController : ControllerBase
   }
  
   [HttpGet]
+  [AllowAnonymous]
   public async Task<IActionResult> GetAllCategories(CancellationToken cancellationToken = new())
   {
     var cities = await _categoryService.GetAllCategories();
     return Ok(_mapper.Map<List<CategoryResponse>>(cities));
   }
   
-  [HttpPatch]
+  [HttpPut]
   [Route("{id:int}")]
   public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequest request, CancellationToken cancellationToken = new())
   {

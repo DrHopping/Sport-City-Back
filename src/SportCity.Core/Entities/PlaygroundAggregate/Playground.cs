@@ -12,6 +12,8 @@ public class Playground : BaseEntity, IAggregateRoot
   public Location Location { get; private set; }
   public int CityId { get; set; }
   public City City { get; private set; }
+
+  public double Rating => _reviews.Select(r => r.Rating).DefaultIfEmpty(0).Average();
   
   private readonly List<Review> _reviews = new();
   public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
@@ -27,5 +29,13 @@ public class Playground : BaseEntity, IAggregateRoot
     Description = description;
     CityId = city;
     Location = location;
+  }
+
+  public void UpdateWith(Playground playgroundUpdate)
+  {
+    Name = !String.IsNullOrWhiteSpace(playgroundUpdate.Name) ? playgroundUpdate.Name : Name;
+    Description = !String.IsNullOrWhiteSpace(playgroundUpdate.Description) ? playgroundUpdate.Description : Description;
+    CityId = playgroundUpdate.CityId > 0 ? playgroundUpdate.CityId : CityId;
+    Location = playgroundUpdate.Location ?? Location;
   }
 }

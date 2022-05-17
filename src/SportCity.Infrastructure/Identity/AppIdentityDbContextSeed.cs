@@ -19,7 +19,7 @@ public static class AppIdentityDbContextSeed
 
     var admin = new EfApplicationUser
     {
-      FirstName = "Admin", LastName = "Admin", UserName = "admin@microsoft.com", Email = "admin@microsoft.com"
+      UserName = "admin@microsoft.com", Email = "admin@microsoft.com"
     };
     var result = await userManager.CreateAsync(admin, "Admin123!");
     admin = await userManager.FindByEmailAsync(admin.Email);

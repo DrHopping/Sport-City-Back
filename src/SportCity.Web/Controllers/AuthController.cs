@@ -23,5 +23,14 @@ namespace SportCity.Web.Controllers
       var result = await _authenticationService.Authenticate(request.Email, request.Password);
       return Ok(result);
     }
+    
+    [HttpPost]
+    [Route("admin")]
+    public async Task<IActionResult> AuthenticateAdminTest()
+    {
+      var result = await _authenticationService.Authenticate("admin@microsoft.com", "Admin123!");
+      return Ok(result);
+    }
+    
   }
 }
