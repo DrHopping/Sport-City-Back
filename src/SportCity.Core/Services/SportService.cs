@@ -37,7 +37,7 @@ public class SportService : ISportService
   public async Task<Sport> UpdateSportName(int id, string name)
   {
     var sport = await _sportRepository.GetByIdAsync(id);
-    Guard.Against.EntityNotFound(sport, nameof(id), id.ToString());    
+    Guard.Against.EntityNotFound(sport, nameof(id), id.ToString());
     
     var sameNameSport = await _sportRepository.GetBySpecAsync(new SportByNameSpec(name));
     Guard.Against.EntityAlreadyExists(sameNameSport, nameof(name), name);

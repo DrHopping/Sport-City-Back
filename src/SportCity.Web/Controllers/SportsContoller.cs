@@ -31,10 +31,19 @@ public class SportsController : ControllerBase
  
   [HttpGet]
   [AllowAnonymous]
-  public async Task<IActionResult> GetAllCities(CancellationToken cancellationToken = new())
+  public async Task<IActionResult> GetAllSports(CancellationToken cancellationToken = new())
   {
-    var cities = await _sportService.GetAllSports();
-    return Ok(_mapper.Map<List<SportResponse>>(cities));
+    var sports = await _sportService.GetAllSports();
+    return Ok(_mapper.Map<List<SportResponse>>(sports));
+  }
+
+  [HttpGet]
+  [AllowAnonymous]
+  [Route("{id:int}")]
+  public async Task<IActionResult> GetSport(int id, CancellationToken cancellationToken = new())
+  {
+    var sport = await _sportService.GetSportById(id);
+    return Ok(_mapper.Map<SportResponse>(sport));
   }
   
   [HttpPut]
