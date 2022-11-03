@@ -2,5 +2,5 @@
 
 public interface IOwnableEntityService
 {
-  Task<string> GetOwnerId(int id);
+    Task<string> GetOwnerId(int id);
 }

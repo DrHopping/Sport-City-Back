@@ -4,5 +4,5 @@ namespace SportCity.Infrastructure.Exceptions;
 
 public class WrongPasswordException : BadRequestException
 {
-  public WrongPasswordException() : base($"Wrong password") { }
+    public WrongPasswordException() : base($"Wrong password") { }
 }

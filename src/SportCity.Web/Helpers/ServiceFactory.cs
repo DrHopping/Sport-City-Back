@@ -6,12 +6,12 @@ namespace SportCity.Web.Helpers;
 
 public static class ServiceFactory
 {
-  public static IOwnableEntityService GetDomainServiceFor(this IServiceProvider provider,Type t)
-  {
-    return t.Name switch
+    public static IOwnableEntityService GetDomainServiceFor(this IServiceProvider provider, Type t)
     {
-      "Player" => provider.GetService<IPlayerService>(),
-      _ => null
-    } ?? throw new InvalidOperationException();
-  }
+        return t.Name switch
+        {
+            "Player" => provider.GetService<IPlayerService>(),
+            _ => null
+        } ?? throw new InvalidOperationException();
+    }
 }

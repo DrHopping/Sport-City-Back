@@ -2,5 +2,5 @@
 
 public class ExceptionResponse
 {
-  public string[] Errors { get; set; }
+    public string[] Errors { get; set; }
 }

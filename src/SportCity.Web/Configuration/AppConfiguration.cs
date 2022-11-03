@@ -7,45 +7,44 @@ namespace SportCity.Web.Configuration;
 
 public static class AppConfiguration
 {
-  public static async Task SeedAppDb(this WebApplication app)
-  {
-    using var scope = app.Services.CreateScope();
-    var scopedProvider = scope.ServiceProvider;
-    try
+    public static async Task SeedAppDb(this WebApplication app)
     {
-      var appContext = scopedProvider.GetRequiredService<AppDbContext>();
-      await appContext.Database.EnsureCreatedAsync();
-      await appContext.SeedAsync();
+        using var scope = app.Services.CreateScope();
+        var scopedProvider = scope.ServiceProvider;
+        try
+        {
+            var appContext = scopedProvider.GetRequiredService<AppDbContext>();
+            await appContext.Database.EnsureCreatedAsync();
+            await appContext.SeedAsync();
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "An error occurred setting the DB.");
+        }
     }
-    catch (Exception ex)
-    {
-      app.Logger.LogError(ex, "An error occurred setting the DB.");
-    }
-  }
 
-  public static async Task SeedIdentityDb(this WebApplication app)
-  {
-    using var scope = app.Services.CreateScope();
-    var scopedProvider = scope.ServiceProvider;
-    try
+    public static async Task SeedIdentityDb(this WebApplication app)
     {
-      var userManager = scopedProvider.GetRequiredService<UserManager<EfApplicationUser>>();
-      var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-      var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
-      await identityContext.Database.EnsureCreatedAsync();
-      await identityContext.SeedAsync(userManager, roleManager);
+        using var scope = app.Services.CreateScope();
+        var scopedProvider = scope.ServiceProvider;
+        try
+        {
+            var userManager = scopedProvider.GetRequiredService<UserManager<EfApplicationUser>>();
+            var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+            await identityContext.Database.EnsureCreatedAsync();
+            await identityContext.SeedAsync(userManager, roleManager);
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "An error occurred seeding the DB.");
+        }
     }
-    catch (Exception ex)
+
+    public static void UseApplicationMiddleware(this WebApplication app)
     {
-      app.Logger.LogError(ex, "An error occurred seeding the DB.");
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
+        app.UseMiddleware<TokenHandlerMiddleware>();
+        app.UseMiddleware<OwningUserAccessMiddleware>();
     }
-  }
-
-  public static void UseApplicationMiddleware(this WebApplication app)
-  {
-    app.UseMiddleware<ExceptionHandlerMiddleware>();
-    app.UseMiddleware<TokenHandlerMiddleware>();
-    app.UseMiddleware<OwningUserAccessMiddleware>();
-  }
-
 }

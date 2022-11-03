@@ -2,7 +2,7 @@
 
 public interface IAuthorizationService
 {
-  bool IsAdmin();
-  void SetToken(string token);
-  string GetIdentity();
+    bool IsAdmin();
+    void SetToken(string token);
+    string GetIdentity();
 }

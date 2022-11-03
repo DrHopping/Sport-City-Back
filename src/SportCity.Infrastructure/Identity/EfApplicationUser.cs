@@ -4,5 +4,4 @@ namespace SportCity.Infrastructure.Identity;
 
 public class EfApplicationUser : IdentityUser
 {
-  
 }

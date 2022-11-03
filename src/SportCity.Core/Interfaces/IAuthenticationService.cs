@@ -2,5 +2,5 @@
 
 public interface IAuthenticationService
 {
-  Task<string> Authenticate(string email, string password);
+    Task<string> Authenticate(string email, string password);
 }

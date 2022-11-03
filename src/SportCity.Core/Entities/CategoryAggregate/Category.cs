@@ -6,15 +6,15 @@ namespace SportCity.Core.Entities.CategoryAggregate;
 
 public class Category : BaseEntity, IAggregateRoot
 {
-  public string Name { get; private set; }
+    public string Name { get; private set; }
 
-  private Category() { }
+    private Category() { }
 
-  public Category(string name)
-  {
-    Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));;
-  }
-  
-  public void UpdateName(string name) => Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+    public Category(string name)
+    {
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+        ;
+    }
 
+    public void UpdateName(string name) => Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
 }

@@ -8,18 +8,18 @@ namespace SportCity.Core.User.Handlers;
 
 public class NewUserCreatedHandler : INotificationHandler<NewUserCreatedEvent>
 {
-  private readonly IRepository<Player> _repository;
+    private readonly IRepository<Player> _repository;
 
-  public NewUserCreatedHandler(IRepository<Player> repository)
-  {
-    _repository = repository;
-  }
+    public NewUserCreatedHandler(IRepository<Player> repository)
+    {
+        _repository = repository;
+    }
 
-  public async Task Handle(NewUserCreatedEvent domainEvent, CancellationToken cancellationToken)
-  {
-    Guard.Against.Null(domainEvent, nameof(domainEvent));
-    var user = domainEvent.NewUser;
-    var player = new Player(user.IdentityId, user.FirstName, user.LastName, 1);
-    await _repository.AddAsync(player, cancellationToken);
-  }
+    public async Task Handle(NewUserCreatedEvent domainEvent, CancellationToken cancellationToken)
+    {
+        Guard.Against.Null(domainEvent, nameof(domainEvent));
+        var user = domainEvent.NewUser;
+        var player = new Player(user.IdentityId, user.FirstName, user.LastName, 1);
+        await _repository.AddAsync(player, cancellationToken);
+    }
 }

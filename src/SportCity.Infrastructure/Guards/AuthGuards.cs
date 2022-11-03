@@ -8,21 +8,19 @@ namespace SportCity.Infrastructure.Guards;
 
 public static class AuthGuards
 {
-  public static void NotAdmin(this IGuardClause guardClause, IAuthorizationService service)
-  {
-    if (!service.IsAdmin())
+    public static void NotAdmin(this IGuardClause guardClause, IAuthorizationService service)
     {
-      throw new RequireAdminRoleException();
+        if (!service.IsAdmin())
+        {
+            throw new RequireAdminRoleException();
+        }
     }
-  }
 
-  public static void InvalidToken(this IGuardClause guardClause, bool isValid)
-  {
-    if (!isValid)
+    public static void InvalidToken(this IGuardClause guardClause, bool isValid)
     {
-      throw new UnauthorizedException("Invalid token");
+        if (!isValid)
+        {
+            throw new UnauthorizedException("Invalid token");
+        }
     }
-  }
-  
-  
 }

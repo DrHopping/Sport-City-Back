@@ -2,5 +2,5 @@
 
 public class EventIsFullExceptions : Exception
 {
-  public EventIsFullExceptions(int capacity) : base($"Event is full and have only {capacity} places") { }
+    public EventIsFullExceptions(int capacity) : base($"Event is full and have only {capacity} places") { }
 }

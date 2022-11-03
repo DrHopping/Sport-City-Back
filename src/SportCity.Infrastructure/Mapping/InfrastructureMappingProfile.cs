@@ -8,8 +8,8 @@ namespace SportCity.Infrastructure.Mapping;
 
 public class InfrastructureMappingProfile : Profile
 {
-  public InfrastructureMappingProfile()
-  {
-    CreateMap<EfApplicationUser, User>().ForMember(u => u.IdentityId, opt => opt.MapFrom(au => au.Id));
-  }
+    public InfrastructureMappingProfile()
+    {
+        CreateMap<EfApplicationUser, User>().ForMember(u => u.IdentityId, opt => opt.MapFrom(au => au.Id));
+    }
 }

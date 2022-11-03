@@ -9,38 +9,41 @@ namespace SportCity.Core.Entities.PlayerAggregate;
 
 public class Player : BaseEntity, IAggregateRoot
 {
-  public string IdentityGuid { get; private set; }
-  public byte[] Avatar { get; private set; }
-  public string FirstName { get; private set; }
-  public string LastName { get; private set; }
-  public int CategoryId { get; private set; }
-  public Category Category { get; private set; }
-  
-  private readonly List<Event> _participatedEvents = new();
-  public IReadOnlyCollection<Event> ParticipatedEvents => _participatedEvents.AsReadOnly();
-  
-  private readonly List<Event> _organizedEvents = new();
-  public IReadOnlyCollection<Event> OrganizedEvents => _participatedEvents.AsReadOnly();
-  
-  private Player() { }
+    public string IdentityGuid { get; private set; }
+    public byte[] Avatar { get; private set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public int CategoryId { get; private set; }
+    public Category Category { get; private set; }
 
-  public Player(string identityGuid, string firstName, string lastName, int categoryId) //TODO: Add avatars
-  { 
-    IdentityGuid = identityGuid;
-    FirstName = firstName;
-    LastName = lastName;
-    CategoryId = categoryId;
-  }
-  
-  public void UpdateCategory(int categoryId) => CategoryId = Guard.Against.Negative(categoryId, nameof(categoryId));
-  public void UpdateFirstName(string firstName) => FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
-  public void UpdateLastName(string lastName) => LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
+    private readonly List<Event> _participatedEvents = new();
+    public IReadOnlyCollection<Event> ParticipatedEvents => _participatedEvents.AsReadOnly();
 
-  public void UpdateWith(Player playerUpdate)
-  {
-    CategoryId = playerUpdate.CategoryId > 0 ? playerUpdate.CategoryId : CategoryId;
-    FirstName = !String.IsNullOrWhiteSpace(playerUpdate.FirstName) ? playerUpdate.FirstName : FirstName;
-    LastName = !String.IsNullOrWhiteSpace(playerUpdate.LastName) ? playerUpdate.LastName : LastName;
-  }
+    private readonly List<Event> _organizedEvents = new();
+    public IReadOnlyCollection<Event> OrganizedEvents => _participatedEvents.AsReadOnly();
 
+    private Player() { }
+
+    public Player(string identityGuid, string firstName, string lastName, int categoryId) //TODO: Add avatars
+    {
+        IdentityGuid = identityGuid;
+        FirstName = firstName;
+        LastName = lastName;
+        CategoryId = categoryId;
+    }
+
+    public void UpdateCategory(int categoryId) => CategoryId = Guard.Against.Negative(categoryId, nameof(categoryId));
+
+    public void UpdateFirstName(string firstName) =>
+        FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
+
+    public void UpdateLastName(string lastName) =>
+        LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
+
+    public void UpdateWith(Player playerUpdate)
+    {
+        CategoryId = playerUpdate.CategoryId > 0 ? playerUpdate.CategoryId : CategoryId;
+        FirstName = !String.IsNullOrWhiteSpace(playerUpdate.FirstName) ? playerUpdate.FirstName : FirstName;
+        LastName = !String.IsNullOrWhiteSpace(playerUpdate.LastName) ? playerUpdate.LastName : LastName;
+    }
 }

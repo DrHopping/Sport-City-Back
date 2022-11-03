@@ -6,21 +6,21 @@ namespace SportCity.Infrastructure.Identity.Services;
 
 public class AuthorizationService : IAuthorizationService
 {
-  private readonly ITokenClaimsService _tokenClaimService;
-  private string _token; 
-  
-  public AuthorizationService(ITokenClaimsService tokenClaimService)
-  {
-    _tokenClaimService = tokenClaimService;
-  }
+    private readonly ITokenClaimsService _tokenClaimService;
+    private string _token;
 
-  public bool IsAdmin()
-  {
-    var roles = _tokenClaimService.GetUserRoles(_token);
-    return roles.Contains(Roles.Admin);
-  }
-  
-  public void SetToken(string token) => _token = Guard.Against.NullOrWhiteSpace(token, nameof(token));
+    public AuthorizationService(ITokenClaimsService tokenClaimService)
+    {
+        _tokenClaimService = tokenClaimService;
+    }
 
-  public string GetIdentity() => _tokenClaimService.GetUserIdentity(_token);
+    public bool IsAdmin()
+    {
+        var roles = _tokenClaimService.GetUserRoles(_token);
+        return roles.Contains(Roles.Admin);
+    }
+
+    public void SetToken(string token) => _token = Guard.Against.NullOrWhiteSpace(token, nameof(token));
+
+    public string GetIdentity() => _tokenClaimService.GetUserIdentity(_token);
 }

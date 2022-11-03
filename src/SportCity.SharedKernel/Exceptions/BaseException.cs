@@ -5,13 +5,13 @@ namespace SportCity.SharedKernel.Exceptions;
 
 public class BaseException : Exception
 {
-  public string[] Errors { get; set; }
-  
-  public HttpStatusCode StatusCode { get; set; }
+    public string[] Errors { get; set; }
 
-  public BaseException(HttpStatusCode statusCode, params string[] errors)
-  {
-    Errors = errors;
-    StatusCode = statusCode;
-  }
+    public HttpStatusCode StatusCode { get; set; }
+
+    public BaseException(HttpStatusCode statusCode, params string[] errors)
+    {
+        Errors = errors;
+        StatusCode = statusCode;
+    }
 }
