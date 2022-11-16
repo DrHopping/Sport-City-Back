@@ -20,9 +20,17 @@ public class OwningUserAccessMiddleware : IMiddleware
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        var isPermissionsGranted = await CheckPermission(context);
+        var isSecuredWithOwningUserAccess = CheckAttribute(context);
+        var isPermissionsGranted = !isSecuredWithOwningUserAccess || await CheckPermission(context);
         if (!isPermissionsGranted) throw new ForbiddenException("You must be owner or admin to perform this operation");
         await next(context);
+    }
+
+    private bool CheckAttribute(HttpContext context)
+    {
+        var endpoint = context.GetEndpoint();
+        var attr = endpoint?.Metadata.GetMetadata<OwningUserAccess>();
+        return attr != null;
     }
 
     private async Task<bool> CheckPermission(HttpContext context)
@@ -31,8 +39,6 @@ public class OwningUserAccessMiddleware : IMiddleware
 
         var endpoint = context.GetEndpoint();
         var attr = endpoint?.Metadata.GetMetadata<OwningUserAccess>();
-        if (attr == null) return true;
-
         var methodData = endpoint?.Metadata.GetMetadata<ControllerActionDescriptor>();
         var idParameter = methodData?.Parameters
             .Select(p => (ControllerParameterDescriptor)p)

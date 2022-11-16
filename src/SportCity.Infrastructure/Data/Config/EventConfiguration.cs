@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportCity.Core.Entities.EventAggregate;
-using SportCity.Core.Entities.PlayerAggregate;
-using SportCity.Core.Entities.PlaygroundAggregate;
 
 namespace SportCity.Infrastructure.Data.Config;
 

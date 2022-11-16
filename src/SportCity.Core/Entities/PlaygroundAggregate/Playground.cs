@@ -9,6 +9,7 @@ public class Playground : BaseEntity, IAggregateRoot
 {
     public string Name { get; private set; }
     public string Description { get; private set; }
+    public string PhotoUrl { get; private set; }
     public Location Location { get; private set; }
     public int CityId { get; set; }
     public City City { get; private set; }
@@ -23,12 +24,13 @@ public class Playground : BaseEntity, IAggregateRoot
 
     private Playground() { }
 
-    public Playground(string name, string description, int city, Location location)
+    public Playground(string name, string description, int city, string photoUrl, Location location)
     {
         Name = name;
         Description = description;
         CityId = city;
         Location = location;
+        PhotoUrl = photoUrl;
     }
 
     public void UpdateWith(Playground playgroundUpdate)
@@ -38,6 +40,6 @@ public class Playground : BaseEntity, IAggregateRoot
             ? playgroundUpdate.Description
             : Description;
         CityId = playgroundUpdate.CityId > 0 ? playgroundUpdate.CityId : CityId;
-        Location = playgroundUpdate.Location ?? Location;
+        Location = playgroundUpdate.Location;
     }
 }

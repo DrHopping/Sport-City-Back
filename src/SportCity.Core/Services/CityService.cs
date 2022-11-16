@@ -2,7 +2,6 @@
 using SportCity.Core.Entities.CityAggregate;
 using SportCity.Core.Entities.CityAggregate.Specifications;
 using SportCity.Core.Guards;
-using SportCity.Core.Interfaces;
 using SportCity.SharedKernel.Interfaces;
 
 namespace SportCity.Core.Services;

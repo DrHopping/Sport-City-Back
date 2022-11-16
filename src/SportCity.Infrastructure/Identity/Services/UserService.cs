@@ -32,10 +32,11 @@ public class UserService : IUserService
     public async Task<User> CreateUser(string firstName, string lastName, string password, [EmailAddress] string email)
     {
         Guard.Against.EmailAlreadyTaken(await _userManager.FindByEmailAsync(email));
-        //Guard.Against.UsernameAlreadyTaken(await _userManager.FindByNameAsync(username));
+
         var user = new EfApplicationUser { UserName = email, Email = email };
         var result = await _userManager.CreateAsync(user, password);
         Guard.Against.BadPassword(result);
+
         await AddToRole(user, Roles.User);
         user = await _userManager.FindByEmailAsync(user.Email);
         var userModel = new User { FirstName = firstName, LastName = lastName, IdentityId = user.Id };

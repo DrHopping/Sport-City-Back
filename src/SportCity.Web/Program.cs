@@ -1,17 +1,7 @@
-﻿using Ardalis.ListStartupServices;
-using Autofac;
+﻿using System.Text.Json.Serialization;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using SportCity.Core;
-using SportCity.Infrastructure;
-using SportCity.Infrastructure.Data;
-using SportCity.Web;
-using Microsoft.OpenApi.Models;
 using Serilog;
-using SportCity.Infrastructure.Identity;
 using SportCity.Web.Configuration;
-using SportCity.Web.Filters;
-using SportCity.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());

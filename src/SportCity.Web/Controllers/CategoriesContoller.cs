@@ -12,12 +12,12 @@ namespace SportCity.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class CategoryController : ControllerBase
+public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
     private readonly IMapper _mapper;
 
-    public CategoryController(ICategoryService categoryService, IMapper mapper)
+    public CategoriesController(ICategoryService categoryService, IMapper mapper)
     {
         _categoryService = categoryService;
         _mapper = mapper;

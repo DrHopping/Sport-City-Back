@@ -11,12 +11,12 @@ namespace SportCity.Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class PlaygroundController : ControllerBase
+public class PlaygroundsController : ControllerBase
 {
     private readonly IPlaygroundService _playgroundService;
     private readonly IMapper _mapper;
 
-    public PlaygroundController(IPlaygroundService playgroundService, IMapper mapper)
+    public PlaygroundsController(IPlaygroundService playgroundService, IMapper mapper)
     {
         _playgroundService = playgroundService;
         _mapper = mapper;
@@ -26,9 +26,14 @@ public class PlaygroundController : ControllerBase
     public async Task<IActionResult> CreatePlayground([FromBody] PlaygroundRequest request,
         CancellationToken cancellationToken = new())
     {
-        var playground =
-            await _playgroundService.CreatePlayground(request.Name, request.Description, request.CityId,
-                request.Location);
+        var playground = await _playgroundService.CreatePlayground
+        (
+            request.Name,
+            request.Description,
+            request.CityId,
+            request.PhotoUrl,
+            request.Location
+        );
         return Ok(_mapper.Map<PlaygroundCreateResponse>(playground));
     }
 
@@ -37,8 +42,18 @@ public class PlaygroundController : ControllerBase
     public async Task<IActionResult> GetAllPlaygrounds(CancellationToken cancellationToken = new())
     {
         var playgrounds = await _playgroundService.GetAllPlaygrounds();
-        return Ok(_mapper.Map<List<PlaygroundGetResponse>>(playgrounds));
+        return Ok(_mapper.Map<List<PlaygroundListResponse>>(playgrounds));
     }
+
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("{id:int}")]
+    public async Task<IActionResult> GetPlayground(int id, CancellationToken cancellationToken = new())
+    {
+        var playgrounds = await _playgroundService.GetPlaygroundById(id);
+        return Ok(_mapper.Map<PlaygroundResponse>(playgrounds));
+    }
+
 
     /*[HttpPut]
     [Route("{id:int}")]

@@ -18,19 +18,19 @@ public class PlaygroundService : IPlaygroundService
         _cityRepository = cityRepository;
     }
 
-    public async Task<Playground> CreatePlayground(string name, string description, int cityId, Location location)
+    public async Task<Playground> CreatePlayground(string name, string description, int cityId, string photoUrl, Location location)
     {
-        var playground = new Playground(name, description, cityId, location);
+        var playground = new Playground(name, description, cityId, photoUrl, location);
         playground = await _playgroundRepository.AddAsync(playground);
         return playground;
     }
 
     public async Task<List<Playground>> GetAllPlaygrounds() =>
-        await _playgroundRepository.ListAsync(new PlaygroundIncludeCitySpec());
+        await _playgroundRepository.ListAsync(new PlaygroundListIncludeSpec());
 
     public async Task<Playground> GetPlaygroundById(int id)
     {
-        var playground = await _playgroundRepository.GetByIdAsync(id);
+        var playground = await _playgroundRepository.GetBySpecAsync(new PlaygroundByIdSpec(id));
         Guard.Against.EntityNotFound(playground, nameof(id), id.ToString());
         return playground;
     }
@@ -61,7 +61,7 @@ public class PlaygroundService : IPlaygroundService
 
 public interface IPlaygroundService
 {
-    Task<Playground> CreatePlayground(string name, string description, int cityId, Location location);
+    Task<Playground> CreatePlayground(string name, string description, int cityId, string photoUrl, Location location);
     Task<List<Playground>> GetAllPlaygrounds();
     Task<Playground> GetPlaygroundById(int id);
     Task<Playground> UpdatePlayground(int id, Playground playgroundUpdate);

@@ -5,5 +5,8 @@ public abstract class BaseEntity
 {
     public int Id { get; set; }
 
-    public List<BaseDomainEvent> Events = new List<BaseDomainEvent>();
+    private List<BaseDomainEvent> _events = new();
+
+    public List<BaseDomainEvent> GetDomainEvents() => _events;
+    public void AddDomainEvent(BaseDomainEvent @event) => _events.Add(@event);
 }

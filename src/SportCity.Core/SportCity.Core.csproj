@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Entities\CategoryAggregate\Exceptions" />
     <Folder Include="Entities\CityAggregate\Exceptions" />
-    <Folder Include="Entities\EventAggregate\Specifications" />
     <Folder Include="Entities\PlaygroundAggregate\Exceptions" />
     <Folder Include="Entities\SportAggregate\Exceptions" />
   </ItemGroup>

@@ -13,7 +13,6 @@ public class Category : BaseEntity, IAggregateRoot
     public Category(string name)
     {
         Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
-        ;
     }
 
     public void UpdateName(string name) => Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
