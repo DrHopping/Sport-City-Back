@@ -2,9 +2,9 @@
 
 namespace SportCity.Core.Entities.PlaygroundAggregate.Specifications;
 
-public class PlaygroundListIncludeSpec : Specification<Playground>
+public class PlaygroundListSpec : Specification<Playground>
 {
-    public PlaygroundListIncludeSpec()
+    public PlaygroundListSpec()
     {
         Query
             .Include(p => p.City)

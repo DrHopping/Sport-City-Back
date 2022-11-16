@@ -10,7 +10,7 @@ namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
+[AllowAnonymous]
 public class PlaygroundsController : ControllerBase
 {
     private readonly IPlaygroundService _playgroundService;
@@ -23,6 +23,7 @@ public class PlaygroundsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> CreatePlayground([FromBody] PlaygroundRequest request,
         CancellationToken cancellationToken = new())
     {
@@ -38,7 +39,6 @@ public class PlaygroundsController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> GetAllPlaygrounds(CancellationToken cancellationToken = new())
     {
         var playgrounds = await _playgroundService.GetAllPlaygrounds();
@@ -46,7 +46,15 @@ public class PlaygroundsController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Route("/api/cities/{cityId:int}/playgrounds")]
+    public async Task<IActionResult> GetCityPlaygrounds(int cityId,
+        CancellationToken cancellationToken = new())
+    {
+        var playgrounds = await _playgroundService.GetCityPlaygrounds(cityId);
+        return Ok(_mapper.Map<List<PlaygroundListResponse>>(playgrounds));
+    }
+
+    [HttpGet]
     [Route("{id:int}")]
     public async Task<IActionResult> GetPlayground(int id, CancellationToken cancellationToken = new())
     {
@@ -65,6 +73,7 @@ public class PlaygroundsController : ControllerBase
 
     [HttpDelete]
     [Route("{id:int}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> DeletePlayground(int id, CancellationToken cancellationToken = new())
     {
         await _playgroundService.DeletePlayground(id);
