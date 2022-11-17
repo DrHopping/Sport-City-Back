@@ -9,6 +9,7 @@ COPY ["src/SportCity.Web/SportCity.Web.csproj", "SportCity.Web/"]
 COPY ["src/SportCity.Infrastructure/SportCity.Infrastructure.csproj", "SportCity.Infrastructure/"]
 COPY ["src/SportCity.Core/SportCity.Core.csproj", "SportCity.Core/"]
 COPY ["src/SportCity.SharedKernel/SportCity.SharedKernel.csproj", "SportCity.SharedKernel/"]
+WORKDIR /
 RUN dotnet restore "src/SportCity.Web/SportCity.Web.csproj"
 COPY . .
 WORKDIR "/src/SportCity.Web"
