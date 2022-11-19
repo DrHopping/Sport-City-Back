@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportCity.Core.Interfaces;
+using SportCity.Core.Services;
 using SportCity.Web.Models;
 
 namespace SportCity.Web.Controllers
@@ -11,25 +13,43 @@ namespace SportCity.Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IPlayerService _playerService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthenticationService authenticationService)
+        public AuthController(IAuthenticationService authenticationService, IPlayerService playerService, IMapper mapper)
         {
             _authenticationService = authenticationService;
+            _playerService = playerService;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> Authenticate([FromBody] AuthRequest request)
         {
-            var result = await _authenticationService.Authenticate(request.Email, request.Password);
-            return Ok(result);
+            var user = await _authenticationService.Authenticate(request.Email, request.Password);
+            var player = await _playerService.GetPlayerById(user.Id);
+            return Ok(new
+            {
+                IdentityId = user.Id,
+                Player = _mapper.Map<PlayerListResponse>(player),
+                Token = user.Token,
+                Role = user.Role
+            });
         }
 
         [HttpPost]
         [Route("admin")]
         public async Task<IActionResult> AuthenticateAdminTest()
         {
-            var result = await _authenticationService.Authenticate("admin@microsoft.com", "Admin123!");
-            return Ok(result);
+            var user = await _authenticationService.Authenticate("admin@microsoft.com", "Admin123!");
+            var player = await _playerService.GetPlayerById(user.Id);
+            return Ok(new
+            {
+                IdentityId = user.Id,
+                Player = player,
+                Token = user.Token,
+                Role = user.Role
+            });
         }
     }
 }

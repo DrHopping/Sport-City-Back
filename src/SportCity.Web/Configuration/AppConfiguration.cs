@@ -32,8 +32,9 @@ public static class AppConfiguration
             var userManager = scopedProvider.GetRequiredService<UserManager<EfApplicationUser>>();
             var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+            var appContext = scopedProvider.GetRequiredService<AppDbContext>();
             await identityContext.Database.EnsureCreatedAsync();
-            await identityContext.SeedAsync(userManager, roleManager);
+            await identityContext.SeedAsync(appContext, userManager, roleManager);
         }
         catch (Exception ex)
         {
