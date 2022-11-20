@@ -28,4 +28,10 @@ public class AuthenticationService : IAuthenticationService
         var role = (await _userManager.GetRolesAsync(user)).First();
         return (user.Id, token, role);
     }
+
+    public async Task<bool> EmailExists(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        return user != null;
+    }
 }

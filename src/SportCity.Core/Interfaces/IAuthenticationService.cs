@@ -3,4 +3,5 @@
 public interface IAuthenticationService
 {
     Task<(string Id, string Token, string Role)> Authenticate(string email, string password);
+    Task<bool> EmailExists(string email);
 }

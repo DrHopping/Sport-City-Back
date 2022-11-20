@@ -37,6 +37,12 @@ namespace SportCity.Web.Controllers
             });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EmailExists([FromQuery] string email)
+        {
+            return Ok(await _authenticationService.EmailExists(email));
+        }
+
         [HttpPost]
         [Route("admin")]
         public async Task<IActionResult> AuthenticateAdminTest()
