@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
         CancellationToken cancellationToken = new())
     {
         var user = await _userService.CreateUser(request.FirstName, request.LastName, request.Password, request.Email);
-        return Ok(_mapper.Map<UserCreateResponse>(user));
+        return NoContent();
     }
 
     [HttpGet]
