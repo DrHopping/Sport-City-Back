@@ -10,7 +10,7 @@ public static class ServiceFactory
     {
         return t.Name switch
         {
-            "Player" => provider.GetService<IPlayerService>(),
+            nameof(Player) => provider.GetService<IPlayerService>(),
             _ => null
         } ?? throw new InvalidOperationException();
     }
