@@ -1,6 +1,8 @@
-﻿namespace SportCity.Core.Entities.EventAggregate.Exceptions;
+﻿using SportCity.SharedKernel.Exceptions;
 
-public class EventIsFullExceptions : Exception
+namespace SportCity.Core.Entities.EventAggregate.Exceptions;
+
+public class EventIsFullExceptions : BadRequestException
 {
     public EventIsFullExceptions(int capacity) : base($"Event is full and have only {capacity} places") { }
 }

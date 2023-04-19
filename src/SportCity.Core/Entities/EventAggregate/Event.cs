@@ -48,4 +48,9 @@ public class Event : BaseEntity, IAggregateRoot
         Guard.Against.FullEvent(_participants.Count, Capacity);
         _participants.Add(player);
     }
+
+    public void RemoveParticipant(Player player)
+    {
+        _participants.Remove(player);
+    }
 }
