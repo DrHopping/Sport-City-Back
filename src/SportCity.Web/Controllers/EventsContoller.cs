@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportCity.Core.Entities.PlayerAggregate;
 using SportCity.Core.Services;
-using SportCity.SharedKernel;
+using SportCity.Web.Attributes;
 using SportCity.Web.Models;
 
 namespace SportCity.Web.Controllers;
@@ -61,7 +62,9 @@ public class EventsController : ControllerBase
 
     [HttpDelete]
     [Route("{eventId:int}/participants/{playerId:int}")]
-    public async Task<IActionResult> RemoveParticipant(int eventId, int playerId, CancellationToken cancellationToken = new())
+    [Authorize]
+    [OwningUserAccess(typeof(Player))]
+    public async Task<IActionResult> RemoveParticipant(int eventId, [OwningUserAccessId] int playerId, CancellationToken cancellationToken = new())
     {
         var @event = await _eventService.RemoveParticipant(eventId, playerId);
         return Ok(_mapper.Map<EventResponse>(@event));
