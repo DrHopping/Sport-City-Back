@@ -62,7 +62,7 @@ public class EventsController : ControllerBase
 
     [HttpDelete]
     [Route("{eventId:int}/participants/{playerId:int}")]
-    public async Task<IActionResult> AddParticipant(int eventId, int playerId, CancellationToken cancellationToken = new())
+    public async Task<IActionResult> RemoveParticipant(int eventId, int playerId, CancellationToken cancellationToken = new())
     {
         var @event = await _eventService.RemoveParticipant(eventId, playerId);
         return Ok(_mapper.Map<EventResponse>(@event));
