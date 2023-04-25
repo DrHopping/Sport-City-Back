@@ -10,7 +10,6 @@ namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class PlayersController : ControllerBase
 {
     private readonly IPlayerService _playerService;
@@ -23,7 +22,6 @@ public class PlayersController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> GetAllPlayers(CancellationToken cancellationToken = new())
     {
         var players = await _playerService.GetAllPlayers();
@@ -32,6 +30,7 @@ public class PlayersController : ControllerBase
 
     [HttpPut]
     [Route("{id:int}")]
+    [Authorize]
     [OwningUserAccess(typeof(Player))]
     public async Task<IActionResult> UpdatePlayer([OwningUserAccessId] int id, [FromBody] PlayerRequest request)
     {

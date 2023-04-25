@@ -9,7 +9,6 @@ namespace SportCity.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;

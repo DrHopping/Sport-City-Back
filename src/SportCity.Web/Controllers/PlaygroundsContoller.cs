@@ -10,7 +10,6 @@ namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
 public class PlaygroundsController : ControllerBase
 {
     private readonly IPlaygroundService _playgroundService;

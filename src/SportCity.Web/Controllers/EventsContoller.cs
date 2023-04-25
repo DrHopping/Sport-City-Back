@@ -9,7 +9,6 @@ namespace SportCity.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
 public class EventsController : ControllerBase
 {
     private readonly IEventService _eventService;
