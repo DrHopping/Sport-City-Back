@@ -89,13 +89,13 @@ public static class BuilderConfiguration
 
     public static void AddAppSettings(this WebApplicationBuilder builder)
     {
-        var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+        var appSettingsSection = builder.Configuration.GetSection(AppSettings.SectionName);
         builder.Services.Configure<AppSettings>(appSettingsSection);
     }
 
     public static void AddAuthentication(this WebApplicationBuilder builder)
     {
-        var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+        var appSettingsSection = builder.Configuration.GetSection(AppSettings.SectionName);
         var appSettings = appSettingsSection.Get<AppSettings>();
         var key = Encoding.ASCII.GetBytes(appSettings.JwtSecret);
         builder.Services.AddAuthentication(x =>
