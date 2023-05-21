@@ -16,5 +16,5 @@ public record PlaygroundCreateResponse(int Id, string Name, string Description, 
 public record PlaygroundResponse(int Id, string Name, string Description, double Rating, string PhotoUrl, City City,
     List<Review> Reviews, Location Location);
 
-public record PlaygroundListResponse(int Id, string Name, string Description, double Rating, string PhotoUrl, City City,
-    Location Location);
+public record PlaygroundListResponse(int Id, string Name, string Description, double Rating, string PhotoUrl,
+    int CityId, City City, Location Location);

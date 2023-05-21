@@ -44,11 +44,8 @@ public class PlaygroundService : IPlaygroundService
         var playground = await _playgroundRepository.GetByIdAsync(id);
         Guard.Against.EntityNotFound(playground, nameof(id), id.ToString());
 
-        if (playgroundUpdate?.CityId > 0)
-        {
-            var city = await _cityRepository.GetByIdAsync(playgroundUpdate.CityId);
-            Guard.Against.EntityNotFound(city, nameof(playgroundUpdate.CityId), playgroundUpdate.CityId.ToString());
-        }
+        var city = await _cityRepository.GetByIdAsync(playgroundUpdate.CityId);
+        Guard.Against.EntityNotFound(city, nameof(playgroundUpdate.CityId), playgroundUpdate.CityId.ToString());
 
         playground.UpdateWith(playgroundUpdate);
         await _playgroundRepository.UpdateAsync(playground);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportCity.Core.Entities.PlaygroundAggregate;
 using SportCity.Core.Services;
 using SportCity.SharedKernel;
 using SportCity.Web.Attributes;
@@ -61,14 +62,15 @@ public class PlaygroundsController : ControllerBase
         return Ok(_mapper.Map<PlaygroundResponse>(playgrounds));
     }
 
-
-    /*[HttpPut]
+    [HttpPut]
     [Route("{id:int}")]
-    public async Task<IActionResult> UpdatePlayground(int id, [FromBody] SportRequest request, CancellationToken cancellationToken = new())
+    public async Task<IActionResult> UpdatePlayground(int id, [FromBody] PlaygroundRequest request,
+        CancellationToken cancellationToken = new())
     {
-      var sport = await _playgroundService.UpdatePlayground(id, );
-      return Ok(_mapper.Map<SportResponse>(sport));
-    }*/
+        var playground = _mapper.Map<Playground>(request);
+        var updatedPlayground = await _playgroundService.UpdatePlayground(id, playground);
+        return Ok(_mapper.Map<PlaygroundResponse>(updatedPlayground));
+    }
 
     [HttpDelete]
     [Route("{id:int}")]
