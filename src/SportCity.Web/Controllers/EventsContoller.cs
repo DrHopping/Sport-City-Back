@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportCity.Core.Entities.PlayerAggregate;
 using SportCity.Core.Services;
-using SportCity.Web.Attributes;
 using SportCity.Web.Models;
+using IAuthorizationService = SportCity.Core.Interfaces.IAuthorizationService;
 
 namespace SportCity.Web.Controllers;
 
@@ -13,12 +12,20 @@ namespace SportCity.Web.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IEventService _eventService;
+    private readonly IPlayerService _playerService;
+    private readonly IAuthorizationService _authService;
     private readonly IMapper _mapper;
 
-    public EventsController(IEventService eventService, IMapper mapper)
+    public EventsController(
+        IEventService eventService,
+        IMapper mapper,
+        IPlayerService playerService,
+        IAuthorizationService authService)
     {
         _eventService = eventService;
         _mapper = mapper;
+        _playerService = playerService;
+        _authService = authService;
     }
 
     [HttpGet]
@@ -52,21 +59,36 @@ public class EventsController : ControllerBase
         return Ok(_mapper.Map<EventResponse>(@event));
     }
 
-    [HttpPut]
-    [Route("{eventId:int}/participants")]
-    public async Task<IActionResult> AddParticipant(int eventId, EventAddParticipantRequest req, CancellationToken cancellationToken = new())
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> CreateEvent(CreateEventRequest request, CancellationToken cancellationToken = new())
     {
-        var @event = await _eventService.AddParticipant(eventId, req.PlayerId);
+        var userId = _authService.GetIdentity();
+        var organizer = await _playerService.GetPlayerById(userId);
+        var @event = await _eventService.CreateEvent(request.CategoryId, request.SportId, organizer.Id,
+            request.PlaygroundId, request.Capacity, request.DateTime);
+        return CreatedAtAction(nameof(GetEvent), new { id = @event.Id }, _mapper.Map<EventResponse>(@event));
+    }
+
+    [HttpPut]
+    [Authorize]
+    [Route("{eventId:int}/participants")]
+    public async Task<IActionResult> AddParticipant(int eventId, CancellationToken cancellationToken = new())
+    {
+        var userId = _authService.GetIdentity();
+        var player = await _playerService.GetPlayerById(userId);
+        var @event = await _eventService.AddParticipant(eventId, player.Id);
         return Ok(_mapper.Map<EventResponse>(@event));
     }
 
     [HttpDelete]
-    [Route("{eventId:int}/participants/{playerId:int}")]
+    [Route("{eventId:int}/participants")]
     [Authorize]
-    [OwningUserAccess(typeof(Player))]
-    public async Task<IActionResult> RemoveParticipant(int eventId, [OwningUserAccessId] int playerId, CancellationToken cancellationToken = new())
+    public async Task<IActionResult> RemoveParticipant(int eventId, CancellationToken cancellationToken = new())
     {
-        var @event = await _eventService.RemoveParticipant(eventId, playerId);
+        var userId = _authService.GetIdentity();
+        var player = await _playerService.GetPlayerById(userId);
+        var @event = await _eventService.RemoveParticipant(eventId, player.Id);
         return Ok(_mapper.Map<EventResponse>(@event));
     }
 }

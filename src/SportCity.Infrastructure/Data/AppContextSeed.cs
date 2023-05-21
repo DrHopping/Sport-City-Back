@@ -172,64 +172,64 @@ public static class AppContextSeed
         return new List<Event>
         {
             new(
-                playground: 1,
-                category: 1,
-                sport: 1,
+                playgroundId: 1,
+                categoryId: 1,
+                sportId: 1,
                 capacity: 10,
                 dateTime: DateTime.UtcNow +
                           TimeSpan.FromDays(Random.Shared.Next(1, 30)) +
                           TimeSpan.FromMinutes(Random.Shared.Next(1, 1200)),
-                organizer: 1
+                organizerId: 1
             ),
             new(
-                playground: 2,
-                category: 2,
-                sport: 2,
+                playgroundId: 2,
+                categoryId: 2,
+                sportId: 2,
                 capacity: 2,
                 dateTime: DateTime.UtcNow +
                           TimeSpan.FromDays(Random.Shared.Next(1, 30)) +
                           TimeSpan.FromMinutes(Random.Shared.Next(1, 1200)),
-                organizer: 2
+                organizerId: 2
             ),
             new(
-                playground: 3,
-                category: 3,
-                sport: 3,
+                playgroundId: 3,
+                categoryId: 3,
+                sportId: 3,
                 capacity: 6,
                 dateTime: DateTime.UtcNow +
                           TimeSpan.FromDays(Random.Shared.Next(1, 30)) +
                           TimeSpan.FromMinutes(Random.Shared.Next(1, 1200)),
-                organizer: 3
+                organizerId: 3
             ),
             new(
-                playground: 4,
-                category: 2,
-                sport: 1,
+                playgroundId: 4,
+                categoryId: 2,
+                sportId: 1,
                 capacity: 4,
                 dateTime: DateTime.UtcNow +
                           TimeSpan.FromDays(Random.Shared.Next(5, 30)) +
                           TimeSpan.FromMinutes(Random.Shared.Next(1, 1200)),
-                organizer: 1
+                organizerId: 1
             ),
             new(
-                playground: 5,
-                category: 1,
-                sport: 3,
+                playgroundId: 5,
+                categoryId: 1,
+                sportId: 3,
                 capacity: 6,
                 dateTime: DateTime.UtcNow -
                           TimeSpan.FromDays(Random.Shared.Next(5, 30)) +
                           TimeSpan.FromMinutes(Random.Shared.Next(1, 1200)),
-                organizer: 1
+                organizerId: 1
             ),
             new(
-                playground: 6,
-                category: 2,
-                sport: 3,
+                playgroundId: 6,
+                categoryId: 2,
+                sportId: 3,
                 capacity: 2,
                 dateTime: DateTime.UtcNow -
                           TimeSpan.FromDays(Random.Shared.Next(5, 30)) +
                           TimeSpan.FromMinutes(Random.Shared.Next(1, 1200)),
-                organizer: 1
+                organizerId: 1
             ),
         };
     }

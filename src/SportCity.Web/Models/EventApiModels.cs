@@ -11,3 +11,5 @@ public record EventResponse(int Id, int Capacity, int ParticipantsCount, DateTim
     Sport Sport, PlaygroundListResponse Playground, PlayerListResponse Organizer, List<PlayerListResponse> Participants);
 
 public record EventAddParticipantRequest([Required] int PlayerId);
+
+public record CreateEventRequest(int CategoryId, int SportId, int PlaygroundId, int Capacity, DateTime DateTime);

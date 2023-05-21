@@ -12,6 +12,8 @@ namespace SportCity.Core.Entities.EventAggregate;
 
 public class Event : BaseEntity, IAggregateRoot
 {
+    public const int MinCapacity = 2;
+
     public int CategoryId { get; private set; }
     public Category Category { get; private set; }
 
@@ -33,14 +35,14 @@ public class Event : BaseEntity, IAggregateRoot
 
     private Event() { }
 
-    public Event(int category, int sport, int capacity, DateTime dateTime, int organizer, int playground)
+    public Event(int categoryId, int sportId, int organizerId, int playgroundId, int capacity, DateTime dateTime)
     {
-        CategoryId = category;
-        SportId = sport;
+        CategoryId = categoryId;
+        SportId = sportId;
+        OrganizerId = organizerId;
+        PlaygroundId = playgroundId;
         Capacity = capacity;
         DateTime = dateTime;
-        OrganizerId = organizer;
-        PlaygroundId = playground;
     }
 
     public void AddParticipant(Player player)
