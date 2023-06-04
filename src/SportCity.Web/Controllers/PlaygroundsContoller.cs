@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SportCity.Core.Entities.PlaygroundAggregate;
 using SportCity.Core.Services;
 using SportCity.SharedKernel;
-using SportCity.Web.Attributes;
 using SportCity.Web.Models;
+using IAuthorizationService = SportCity.Core.Interfaces.IAuthorizationService;
 
 namespace SportCity.Web.Controllers;
 
@@ -14,12 +14,20 @@ namespace SportCity.Web.Controllers;
 public class PlaygroundsController : ControllerBase
 {
     private readonly IPlaygroundService _playgroundService;
+    private readonly IAuthorizationService _authService;
+    private readonly IPlayerService _playerService;
     private readonly IMapper _mapper;
 
-    public PlaygroundsController(IPlaygroundService playgroundService, IMapper mapper)
+    public PlaygroundsController(
+        IPlaygroundService playgroundService,
+        IMapper mapper,
+        IAuthorizationService authService,
+        IPlayerService playerService)
     {
         _playgroundService = playgroundService;
         _mapper = mapper;
+        _authService = authService;
+        _playerService = playerService;
     }
 
     [HttpPost]
@@ -64,6 +72,7 @@ public class PlaygroundsController : ControllerBase
 
     [HttpPut]
     [Route("{id:int}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> UpdatePlayground(int id, [FromBody] PlaygroundRequest request,
         CancellationToken cancellationToken = new())
     {
@@ -80,4 +89,19 @@ public class PlaygroundsController : ControllerBase
         await _playgroundService.DeletePlayground(id);
         return NoContent();
     }
+
+    [HttpPost]
+    [Route("{playgroundId:int}/reviews")]
+    [Authorize]
+    public async Task<IActionResult> AddReview(int playgroundId, [FromBody] AddReviewRequest request,
+        CancellationToken cancellationToken = new())
+    {
+        var userId = _authService.GetIdentity();
+        var player = await _playerService.GetPlayerById(userId);
+
+        var result = await _playgroundService.AddReview(playgroundId, player.Id, request.Rating, request.Comment);
+        return Ok(result);
+    }
+
+
 }

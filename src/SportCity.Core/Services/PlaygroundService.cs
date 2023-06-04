@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using SportCity.Core.Entities.CityAggregate;
+using SportCity.Core.Entities.PlayerAggregate;
 using SportCity.Core.Entities.PlaygroundAggregate;
 using SportCity.Core.Entities.PlaygroundAggregate.Specifications;
 using SportCity.Core.Guards;
@@ -11,11 +12,16 @@ public class PlaygroundService : IPlaygroundService
 {
     private readonly IRepository<Playground> _playgroundRepository;
     private readonly IRepository<City> _cityRepository;
+    private readonly IRepository<Player> _playerRepository;
 
-    public PlaygroundService(IRepository<Playground> playgroundRepository, IRepository<City> cityRepository)
+    public PlaygroundService(
+        IRepository<Playground> playgroundRepository,
+        IRepository<City> cityRepository,
+        IRepository<Player> playerRepository)
     {
         _playgroundRepository = playgroundRepository;
         _cityRepository = cityRepository;
+        _playerRepository = playerRepository;
     }
 
     public async Task<Playground> CreatePlayground(string name, string description, int cityId, string photoUrl,
@@ -58,6 +64,19 @@ public class PlaygroundService : IPlaygroundService
         Guard.Against.EntityNotFound(playground, nameof(id), id.ToString());
         await _playgroundRepository.DeleteAsync(playground);
     }
+
+    public async Task<Playground> AddReview(int playgroundId, int playerId, int rating, string comment)
+    {
+        var playground = await _playgroundRepository.GetByIdAsync(playgroundId);
+        Guard.Against.EntityNotFound(playground, nameof(playgroundId), playgroundId.ToString());
+
+        var player = await _playerRepository.GetByIdAsync(playerId);
+        Guard.Against.EntityNotFound(player, nameof(playerId), playerId.ToString());
+
+        playground.AddReview(playerId, rating, comment);
+        await _playgroundRepository.UpdateAsync(playground);
+        return playground;
+    }
 }
 
 public interface IPlaygroundService
@@ -68,4 +87,5 @@ public interface IPlaygroundService
     Task<Playground> GetPlaygroundById(int id);
     Task<Playground> UpdatePlayground(int id, Playground playgroundUpdate);
     Task DeletePlayground(int id);
+    Task<Playground> AddReview(int playgroundId, int playerId, int rating, string comment);
 }

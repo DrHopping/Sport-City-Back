@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 using SportCity.Core.Entities.CategoryAggregate;
 using SportCity.Core.Entities.EventAggregate;
 using SportCity.SharedKernel;
@@ -20,7 +19,7 @@ public class Player : BaseEntity, IAggregateRoot
     public IReadOnlyCollection<Event> ParticipatedEvents => _participatedEvents.AsReadOnly();
 
     private readonly List<Event> _organizedEvents = new();
-    public IReadOnlyCollection<Event> OrganizedEvents => _participatedEvents.AsReadOnly();
+    public IReadOnlyCollection<Event> OrganizedEvents => _organizedEvents.AsReadOnly();
 
     private Player() { }
 

@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using SportCity.Core.Entities.PlayerAggregate;
 using SportCity.Core.Interfaces;
 using SportCity.SharedKernel.Exceptions;
-using SportCity.SharedKernel.Interfaces;
 using SportCity.Web.Attributes;
 using SportCity.Web.Helpers;
 

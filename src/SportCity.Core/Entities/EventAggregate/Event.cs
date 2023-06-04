@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 using SportCity.Core.Entities.CategoryAggregate;
 using SportCity.Core.Entities.PlayerAggregate;
 using SportCity.Core.Entities.PlaygroundAggregate;

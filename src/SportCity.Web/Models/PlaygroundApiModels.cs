@@ -18,3 +18,6 @@ public record PlaygroundResponse(int Id, string Name, string Description, double
 
 public record PlaygroundListResponse(int Id, string Name, string Description, double Rating, string PhotoUrl,
     int CityId, City City, Location Location);
+
+public record AddReviewRequest(string Comment, int Rating);
+

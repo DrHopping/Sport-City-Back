@@ -1,4 +1,5 @@
-﻿using SportCity.Core.Entities.CityAggregate;
+﻿using Ardalis.GuardClauses;
+using SportCity.Core.Entities.CityAggregate;
 using SportCity.Core.Entities.EventAggregate;
 using SportCity.SharedKernel;
 using SportCity.SharedKernel.Interfaces;
@@ -41,5 +42,11 @@ public class Playground : BaseEntity, IAggregateRoot
             : Description;
         CityId = playgroundUpdate.CityId > 0 ? playgroundUpdate.CityId : CityId;
         Location = playgroundUpdate.Location;
+    }
+
+    public void AddReview(int playerId, int rating, string comment)
+    {
+        Guard.Against.NegativeOrZero(rating, nameof(rating));
+        _reviews.Add(new Review(rating, comment, playerId, Id));
     }
 }
